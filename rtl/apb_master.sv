@@ -1,13 +1,10 @@
 //======================================================================
-// apb_master.sv  -  AMBA 3 APB master (bridge side)
+// apb_master.sv  -  AMBA 3 APB master
 //
 // Implements the IDLE / SETUP / ACCESS state machine.
 //   IDLE   : PSELx = 0, PENABLE = 0
 //   SETUP  : PSELx = 1, PENABLE = 0   - always exactly one cycle
 //   ACCESS : PSELx = 1, PENABLE = 1   - held until PREADY is HIGH
-//
-// The master also does the combinatorial address decode that picks
-// which PSELx to assert.  There is a single master, so no arbiter.
 //======================================================================
 module apb_master #(
     parameter int ADDR_W = 12,
@@ -52,11 +49,11 @@ module apb_master #(
             cmd_done  <= 1'b0;
             cmd_err   <= 1'b0;
         end else begin
-            cmd_done <= 1'b0;                 // one-cycle pulse
+            cmd_done <= 1'b0;
 
             case (state)
                 IDLE: if (cmd_valid) begin
-                    paddr  <= cmd_addr;       // latched, then held stable
+                    paddr  <= cmd_addr;
                     pwrite <= cmd_write;
                     pwdata <= cmd_wdata;
                     state  <= SETUP;
@@ -69,9 +66,9 @@ module apb_master #(
                 // data must not change while we wait.
                 ACCESS: if (pready) begin
                     cmd_rdata <= prdata;
-                    cmd_err   <= pslverr;     // only valid on this cycle
+                    cmd_err   <= pslverr;
                     cmd_done  <= 1'b1;
-                    if (cmd_valid) begin      // back-to-back: skip IDLE
+                    if (cmd_valid) begin
                         paddr  <= cmd_addr;
                         pwrite <= cmd_write;
                         pwdata <= cmd_wdata;

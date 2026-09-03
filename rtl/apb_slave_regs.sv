@@ -3,8 +3,7 @@
 //
 // Models a slow peripheral: holds PREADY LOW for WAIT cycles of the
 // ACCESS phase, so a transfer takes 2 + WAIT cycles.  With WAIT = 2
-// the master samples PREADY as 0, 0, 1 - matching the wait-state
-// timing diagrams in the reference material.
+// the master samples PREADY as 0, 0, 1.
 //
 // Offsets above the four implemented registers return PSLVERR.
 // PSLVERR is only driven HIGH on the final cycle of the transfer,
@@ -30,8 +29,8 @@ module apb_slave_regs #(
     logic [DATA_W-1:0] regs [0:3];
     logic [1:0]        cnt;
 
-    wire [1:0] idx = paddr[3:2];            // 4 registers at +0,+4,+8,+C
-    wire       bad = (paddr[7:4] != 4'h0);  // anything above +C is unmapped
+    wire [1:0] idx = paddr[3:2];
+    wire       bad = (paddr[7:4] != 4'h0);
 
     // ---- wait-state counter -----------------------------------------
     always_ff @(posedge pclk or negedge presetn) begin

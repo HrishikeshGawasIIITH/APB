@@ -2,9 +2,8 @@
 // apb_slave_mem.sv  -  APB slave, 16 x 32-bit memory, zero wait states
 //
 // PREADY tied HIGH  -> every transfer is the 2-cycle minimum.
-// PSLVERR tied LOW  -> this peripheral never reports an error, which
-//                      the spec explicitly allows.
-// Reproduces the "no wait states" write and read timing diagrams.
+// PSLVERR tied LOW  -> this peripheral never reports an error
+// Reproduces the "no wait states" write and read
 //======================================================================
 module apb_slave_mem #(
     parameter int ADDR_W = 12,

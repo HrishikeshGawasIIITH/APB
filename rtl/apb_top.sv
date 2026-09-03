@@ -1,10 +1,6 @@
 //======================================================================
 // apb_top.sv  -  one APB master + two APB slaves
 //
-// This is the single synthesizable top level.  The testbench drives
-// the command port; on an FPGA the same port can be driven by a
-// button, a counter or any small state machine.
-//
 // Address map (decoded inside apb_master):
 //   0x000 - 0x0FF   memory slave    16 x 32-bit, zero wait states
 //   0x100 - 0x10F   register slave  4 registers, 2 wait states
